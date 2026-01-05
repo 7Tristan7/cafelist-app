@@ -1,33 +1,105 @@
-import { createClient } from '@/utils/supabase/server';
+import { createClient } from '@/utils/supabase/server'
+import Link from 'next/link'
+import CafeGrid from './components/CafeGrid'
+import Header from './components/Header'
 
 export default async function Home() {
-  const supabase = await createClient();
-  const { data: cafes } = await supabase.from('cafes').select('*');
+  const supabase = await createClient()
+
+  // Načteme kavárny
+  const { data: cafes } = await supabase.from('cafes').select('*')
+
+  // Načteme uživatele
+  const { data: { user } } = await supabase.auth.getUser()
+
+  // Profil uživatele
+  let profile = null
+  if (user) {
+    const { data } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', user.id)
+      .single()
+    profile = data
+  }
+
+  // Statistiky
+  const totalCafes = cafes?.length || 0
+  const studyFriendly = cafes?.filter(c => c.good_for_study).length || 0
+  const quietCafes = cafes?.filter(c => c.noise_level === 'tiché').length || 0
 
   return (
-    <main className="min-h-screen p-8 bg-gray-50 text-gray-900 font-sans">
-      <h1 className="text-4xl font-bold mb-8 text-center text-amber-800">CaféList - Hradec Králové</h1>
+    <>
+      {/* Background Bubbles */}
+      <ul className="bg-bubbles">
+        <li></li><li></li><li></li><li></li>
+        <li></li><li></li><li></li><li></li>
+      </ul>
 
-      <div className="max-w-4xl mx-auto grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {cafes?.map((cafe) => (
-          <div key={cafe.id} className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden border border-gray-100">
-            <div className="p-6">
-              <div className="flex justify-between items-start mb-2">
-                <h2 className="text-xl font-semibold text-gray-800">{cafe.name}</h2>
-                {cafe.rating && <span className="text-amber-500 font-bold">★ {cafe.rating}</span>}
-              </div>
-              <p className="text-gray-600 text-sm mb-4">{cafe.address}</p>
-              <div className="flex flex-wrap gap-2 text-xs">
-                {cafe.has_wifi && <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded">WiFi</span>}
-                {cafe.noise_level === 'tiché' && <span className="bg-green-100 text-green-800 px-2 py-1 rounded">Tiché</span>}
-              </div>
+      <div className="container">
+        {/* Header */}
+        <Header user={user} profile={profile} />
+
+        {/* Hero Header */}
+        <header className="glass-card header">
+          <h1>☕ CaféList</h1>
+          <p className="subtitle">Najdi tu nejlepší kavárnu v Hradci Králové</p>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '40px', marginTop: '25px', flexWrap: 'wrap' }}>
+            <div style={{ color: 'var(--text-muted)', fontSize: '0.95em' }}>
+              <span style={{ fontWeight: 700, color: 'var(--text)', fontSize: '1.1em' }}>{totalCafes}</span> kaváren
+            </div>
+            <div style={{ color: 'var(--text-muted)', fontSize: '0.95em' }}>
+              <span style={{ fontWeight: 700, color: 'var(--text)', fontSize: '1.1em' }}>📍</span> Hradec Králové
             </div>
           </div>
-        ))}
-        {(!cafes || cafes.length === 0) && (
-          <p className="text-center text-gray-500 col-span-full">Žádné kavárny nenalezeny. Zkontrolujte připojení k databázi.</p>
-        )}
+        </header>
+
+        {/* Statistics */}
+        <div className="glass-card statistics">
+          <div className="stat-card">
+            <div className="number">{totalCafes}</div>
+            <div className="label">Celkem kaváren</div>
+          </div>
+          <div className="stat-card">
+            <div className="number">{studyFriendly}</div>
+            <div className="label">Vhodné na učení</div>
+          </div>
+          <div className="stat-card">
+            <div className="number">{quietCafes}</div>
+            <div className="label">Klidné prostředí</div>
+          </div>
+          <div className="stat-card">
+            <div className="number">0</div>
+            <div className="label">Recenzí celkem</div>
+          </div>
+        </div>
+
+        {/* Controls */}
+        <div className="glass-card controls">
+          {/* Tags Filter */}
+          <div className="tags-filter">
+            <button className="tag-btn active">Všechny</button>
+            <button className="tag-btn">☕ Specialty</button>
+            <button className="tag-btn">🤫 Klidné</button>
+            <button className="tag-btn">🍰 Zákusky</button>
+            <button className="tag-btn">🏛️ Historické</button>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="action-buttons">
+            {profile?.role === 'admin' && (
+              <Link href="/cafes/new" className="btn">
+                ➕ Přidat kavárnu
+              </Link>
+            )}
+            <button className="btn btn-secondary">📥 Import CSV</button>
+            <button className="btn btn-secondary">📤 Export</button>
+          </div>
+        </div>
+
+        {/* Cafe Grid */}
+        <CafeGrid cafes={cafes || []} isAdmin={profile?.role === 'admin'} />
       </div>
-    </main>
-  );
+    </>
+  )
 }
