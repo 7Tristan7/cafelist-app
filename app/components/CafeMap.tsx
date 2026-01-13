@@ -20,6 +20,10 @@ const Popup = dynamic(
     () => import('react-leaflet').then((mod) => mod.Popup),
     { ssr: false }
 )
+const CircleMarker = dynamic(
+    () => import('react-leaflet').then((mod) => mod.CircleMarker),
+    { ssr: false }
+)
 
 interface Cafe {
     id: number
@@ -35,14 +39,37 @@ interface CafeMapProps {
     cafes: Cafe[]
 }
 
+interface UserLocation {
+    latitude: number
+    longitude: number
+}
+
 export default function CafeMap({ cafes }: CafeMapProps) {
     const [isMounted, setIsMounted] = useState(false)
+    const [userLocation, setUserLocation] = useState<UserLocation | null>(null)
+    const [locationError, setLocationError] = useState<string | null>(null)
 
     // Hradec Králové centrum
     const center: [number, number] = [50.2092, 15.8328]
 
     useEffect(() => {
         setIsMounted(true)
+
+        // Získání polohy uživatele
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    setUserLocation({
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude
+                    })
+                },
+                (error) => {
+                    setLocationError(error.message)
+                },
+                { enableHighAccuracy: true }
+            )
+        }
     }, [])
 
     // Filter kavárny s GPS souřadnicemi
@@ -71,7 +98,7 @@ export default function CafeMap({ cafes }: CafeMapProps) {
                 border: '1px solid var(--glass-border)'
             }}>
                 <MapContainer
-                    center={center}
+                    center={userLocation ? [userLocation.latitude, userLocation.longitude] : center}
                     zoom={14}
                     style={{ height: '100%', width: '100%' }}
                     scrollWheelZoom={true}
@@ -80,6 +107,46 @@ export default function CafeMap({ cafes }: CafeMapProps) {
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     />
+
+                    {/* Marker uživatelovy polohy */}
+                    {userLocation && (
+                        <>
+                            {/* Vnější pulsující kruh */}
+                            <CircleMarker
+                                center={[userLocation.latitude, userLocation.longitude]}
+                                radius={25}
+                                pathOptions={{
+                                    color: '#3b82f6',
+                                    fillColor: '#3b82f6',
+                                    fillOpacity: 0.15,
+                                    weight: 2
+                                }}
+                            />
+                            {/* Vnitřní plný bod */}
+                            <CircleMarker
+                                center={[userLocation.latitude, userLocation.longitude]}
+                                radius={8}
+                                pathOptions={{
+                                    color: '#ffffff',
+                                    fillColor: '#3b82f6',
+                                    fillOpacity: 1,
+                                    weight: 3
+                                }}
+                            >
+                                <Popup>
+                                    <div style={{ textAlign: 'center' }}>
+                                        <strong style={{ fontSize: '1.1em' }}>📍 Vaše poloha</strong>
+                                        <br />
+                                        <span style={{ color: '#666', fontSize: '0.85em' }}>
+                                            {userLocation.latitude.toFixed(4)}, {userLocation.longitude.toFixed(4)}
+                                        </span>
+                                    </div>
+                                </Popup>
+                            </CircleMarker>
+                        </>
+                    )}
+
+                    {/* Markery kaváren */}
                     {cafesWithLocation.map((cafe) => (
                         <Marker
                             key={cafe.id}
@@ -124,9 +191,22 @@ export default function CafeMap({ cafes }: CafeMapProps) {
                     ))}
                 </MapContainer>
             </div>
-            <p style={{ color: 'var(--text-muted)', marginTop: '10px', fontSize: '0.9em' }}>
-                📍 Zobrazeno {cafesWithLocation.length} z {cafes.length} kaváren (pouze s GPS souřadnicemi)
-            </p>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '10px' }}>
+                <p style={{ color: 'var(--text-muted)', fontSize: '0.9em', margin: 0 }}>
+                    📍 Zobrazeno {cafesWithLocation.length} z {cafes.length} kaváren
+                </p>
+                {userLocation && (
+                    <p style={{ color: '#3b82f6', fontSize: '0.9em', margin: 0 }}>
+                        🔵 Vaše poloha zobrazena na mapě
+                    </p>
+                )}
+                {locationError && (
+                    <p style={{ color: '#f59e0b', fontSize: '0.85em', margin: 0 }}>
+                        ⚠️ Poloha nedostupná
+                    </p>
+                )}
+            </div>
         </div>
     )
 }
+
