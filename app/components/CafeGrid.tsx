@@ -1,6 +1,8 @@
 'use client'
 
 import Link from 'next/link'
+import { createClient } from '@/utils/supabase/client'
+import { useRouter } from 'next/navigation'
 
 interface Cafe {
     id: number
@@ -14,6 +16,8 @@ interface Cafe {
     has_food: boolean
     is_specialty: boolean
     is_historic: boolean
+    avg_rating?: number
+    rating_count?: number
 }
 
 interface CafeGridProps {
@@ -22,6 +26,8 @@ interface CafeGridProps {
 }
 
 export default function CafeGrid({ cafes, isAdmin }: CafeGridProps) {
+    const router = useRouter()
+    const supabase = createClient()
 
     const getNoiseIcon = (level: string) => {
         switch (level) {
@@ -33,9 +39,17 @@ export default function CafeGrid({ cafes, isAdmin }: CafeGridProps) {
     }
 
     const handleDelete = async (id: number) => {
-        if (confirm('Smazat tuto kavárnu?')) {
-            // TODO: Implement delete
-            console.log('Delete cafe', id)
+        if (confirm('Opravdu chcete smazat tuto kavárnu?')) {
+            const { error } = await supabase
+                .from('cafes')
+                .delete()
+                .eq('id', id)
+
+            if (error) {
+                alert('Chyba při mazání: ' + error.message)
+            } else {
+                router.refresh()
+            }
         }
     }
 
@@ -86,6 +100,17 @@ export default function CafeGrid({ cafes, isAdmin }: CafeGridProps) {
                         {/* Address */}
                         <div className="cafe-address">📍 {cafe.address}</div>
 
+                        {/* Rating */}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+                            <span style={{ color: 'var(--accent)', fontSize: '1.1em' }}>
+                                {'★'.repeat(Math.round(cafe.avg_rating || 0))}
+                                {'☆'.repeat(5 - Math.round(cafe.avg_rating || 0))}
+                            </span>
+                            <span style={{ color: 'var(--text-muted)', fontSize: '0.85em' }}>
+                                {cafe.avg_rating ? cafe.avg_rating.toFixed(1) : '-'} ({cafe.rating_count || 0})
+                            </span>
+                        </div>
+
                         {/* Tags */}
                         <div className="cafe-tags">
                             {cafe.is_specialty && <span className="cafe-tag specialty">☕ Specialty</span>}
@@ -116,9 +141,9 @@ export default function CafeGrid({ cafes, isAdmin }: CafeGridProps) {
                             <Link href={`/cafes/${cafe.id}`} className="btn btn-small">
                                 👁️ Detail
                             </Link>
-                            <button className="btn btn-small btn-secondary">
-                                💬 Recenze (0)
-                            </button>
+                            <Link href={`/cafes/${cafe.id}`} className="btn btn-small btn-secondary">
+                                💬 Recenze ({cafe.rating_count || 0})
+                            </Link>
                         </div>
                     </div>
                 </div>

@@ -1,13 +1,47 @@
 import { createClient } from '@/utils/supabase/server'
-import Link from 'next/link'
 import CafeGrid from './components/CafeGrid'
+import CafeMap from './components/CafeMap'
+import CafeFilters from './components/CafeFilters'
 import Header from './components/Header'
 
-export default async function Home() {
+interface PageProps {
+  searchParams: Promise<{ search?: string; tag?: string }>
+}
+
+export default async function Home({ searchParams }: PageProps) {
+  const params = await searchParams
   const supabase = await createClient()
 
-  // Načteme kavárny
-  const { data: cafes } = await supabase.from('cafes').select('*')
+  // Načteme kavárny s hodnocením (view)
+  let query = supabase.from('cafes_with_ratings').select('*')
+
+  // Filtr podle vyhledávání
+  if (params.search) {
+    query = query.or(`name.ilike.%${params.search}%,address.ilike.%${params.search}%`)
+  }
+
+  // Filtr podle tagu
+  if (params.tag) {
+    switch (params.tag) {
+      case 'specialty':
+        query = query.eq('is_specialty', true)
+        break
+      case 'quiet':
+        query = query.eq('noise_level', 'tiché')
+        break
+      case 'food':
+        query = query.eq('has_food', true)
+        break
+      case 'historic':
+        query = query.eq('is_historic', true)
+        break
+    }
+  }
+
+  const { data: cafes } = await query
+
+  // Načteme všechny kavárny pro statistiky
+  const { data: allCafes } = await supabase.from('cafes_with_ratings').select('*')
 
   // Načteme uživatele
   const { data: { user } } = await supabase.auth.getUser()
@@ -23,10 +57,11 @@ export default async function Home() {
     profile = data
   }
 
-  // Statistiky
-  const totalCafes = cafes?.length || 0
-  const studyFriendly = cafes?.filter(c => c.good_for_study).length || 0
-  const quietCafes = cafes?.filter(c => c.noise_level === 'tiché').length || 0
+  // Statistiky (z všech kaváren)
+  const totalCafes = allCafes?.length || 0
+  const studyFriendly = allCafes?.filter(c => c.good_for_study).length || 0
+  const quietCafes = allCafes?.filter(c => c.noise_level === 'tiché').length || 0
+  const totalRatings = allCafes?.reduce((sum, c) => sum + (c.rating_count || 0), 0) || 0
 
   return (
     <>
@@ -69,33 +104,16 @@ export default async function Home() {
             <div className="label">Klidné prostředí</div>
           </div>
           <div className="stat-card">
-            <div className="number">0</div>
+            <div className="number">{totalRatings}</div>
             <div className="label">Recenzí celkem</div>
           </div>
         </div>
 
-        {/* Controls */}
-        <div className="glass-card controls">
-          {/* Tags Filter */}
-          <div className="tags-filter">
-            <button className="tag-btn active">Všechny</button>
-            <button className="tag-btn">☕ Specialty</button>
-            <button className="tag-btn">🤫 Klidné</button>
-            <button className="tag-btn">🍰 Zákusky</button>
-            <button className="tag-btn">🏛️ Historické</button>
-          </div>
+        {/* Filters */}
+        <CafeFilters isAdmin={profile?.role === 'admin'} />
 
-          {/* Action Buttons */}
-          <div className="action-buttons">
-            {profile?.role === 'admin' && (
-              <Link href="/cafes/new" className="btn">
-                ➕ Přidat kavárnu
-              </Link>
-            )}
-            <button className="btn btn-secondary">📥 Import CSV</button>
-            <button className="btn btn-secondary">📤 Export</button>
-          </div>
-        </div>
+        {/* Map */}
+        <CafeMap cafes={cafes || []} />
 
         {/* Cafe Grid */}
         <CafeGrid cafes={cafes || []} isAdmin={profile?.role === 'admin'} />

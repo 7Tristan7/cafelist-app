@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://unpkg.com/leaflet@1.9.4/dist/leaflet.css');
 
 * {
   margin: 0;
@@ -54,20 +55,89 @@ body {
   border-radius: 50%;
 }
 
-.bg-bubbles li:nth-child(1) { width: 80px; height: 80px; left: 10%; animation-duration: 20s; }
-.bg-bubbles li:nth-child(2) { width: 20px; height: 20px; left: 20%; animation-duration: 25s; animation-delay: 2s; }
-.bg-bubbles li:nth-child(3) { width: 50px; height: 50px; left: 35%; animation-duration: 18s; animation-delay: 4s; }
-.bg-bubbles li:nth-child(4) { width: 60px; height: 60px; left: 50%; animation-duration: 22s; animation-delay: 1s; }
-.bg-bubbles li:nth-child(5) { width: 30px; height: 30px; left: 65%; animation-duration: 28s; animation-delay: 3s; }
-.bg-bubbles li:nth-child(6) { width: 70px; height: 70px; left: 75%; animation-duration: 19s; animation-delay: 5s; }
-.bg-bubbles li:nth-child(7) { width: 40px; height: 40px; left: 85%; animation-duration: 24s; animation-delay: 6s; }
-.bg-bubbles li:nth-child(8) { width: 25px; height: 25px; left: 5%; animation-duration: 21s; animation-delay: 8s; }
+.bg-bubbles li:nth-child(1) {
+  width: 80px;
+  height: 80px;
+  left: 10%;
+  animation-duration: 20s;
+}
+
+.bg-bubbles li:nth-child(2) {
+  width: 20px;
+  height: 20px;
+  left: 20%;
+  animation-duration: 25s;
+  animation-delay: 2s;
+}
+
+.bg-bubbles li:nth-child(3) {
+  width: 50px;
+  height: 50px;
+  left: 35%;
+  animation-duration: 18s;
+  animation-delay: 4s;
+}
+
+.bg-bubbles li:nth-child(4) {
+  width: 60px;
+  height: 60px;
+  left: 50%;
+  animation-duration: 22s;
+  animation-delay: 1s;
+}
+
+.bg-bubbles li:nth-child(5) {
+  width: 30px;
+  height: 30px;
+  left: 65%;
+  animation-duration: 28s;
+  animation-delay: 3s;
+}
+
+.bg-bubbles li:nth-child(6) {
+  width: 70px;
+  height: 70px;
+  left: 75%;
+  animation-duration: 19s;
+  animation-delay: 5s;
+}
+
+.bg-bubbles li:nth-child(7) {
+  width: 40px;
+  height: 40px;
+  left: 85%;
+  animation-duration: 24s;
+  animation-delay: 6s;
+}
+
+.bg-bubbles li:nth-child(8) {
+  width: 25px;
+  height: 25px;
+  left: 5%;
+  animation-duration: 21s;
+  animation-delay: 8s;
+}
 
 @keyframes rise {
-  0% { bottom: -150px; transform: translateX(0) rotate(0deg); opacity: 0; }
-  10% { opacity: 0.1; }
-  50% { opacity: 0.15; }
-  100% { bottom: 110%; transform: translateX(100px) rotate(360deg); opacity: 0; }
+  0% {
+    bottom: -150px;
+    transform: translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 0.1;
+  }
+
+  50% {
+    opacity: 0.15;
+  }
+
+  100% {
+    bottom: 110%;
+    transform: translateX(100px) rotate(360deg);
+    opacity: 0;
+  }
 }
 
 /* Container */
@@ -90,8 +160,15 @@ body {
 }
 
 @keyframes slideDown {
-  from { opacity: 0; transform: translateY(-30px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Header */
@@ -266,7 +343,8 @@ body {
   font-family: inherit;
 }
 
-.tag-btn:hover, .tag-btn.active {
+.tag-btn:hover,
+.tag-btn.active {
   background: var(--primary);
   border-color: var(--primary);
   transform: translateY(-2px);
@@ -379,8 +457,15 @@ body {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Cafe Card */
@@ -450,10 +535,25 @@ body {
   color: var(--primary);
 }
 
-.cafe-tag.specialty { background: rgba(245, 158, 11, 0.2); color: var(--accent); }
-.cafe-tag.quiet { background: rgba(16, 185, 129, 0.2); color: var(--success); }
-.cafe-tag.food { background: rgba(236, 72, 153, 0.2); color: #ec4899; }
-.cafe-tag.historic { background: rgba(139, 92, 246, 0.2); color: var(--secondary); }
+.cafe-tag.specialty {
+  background: rgba(245, 158, 11, 0.2);
+  color: var(--accent);
+}
+
+.cafe-tag.quiet {
+  background: rgba(16, 185, 129, 0.2);
+  color: var(--success);
+}
+
+.cafe-tag.food {
+  background: rgba(236, 72, 153, 0.2);
+  color: #ec4899;
+}
+
+.cafe-tag.historic {
+  background: rgba(139, 92, 246, 0.2);
+  color: var(--secondary);
+}
 
 /* Cafe Stats */
 .cafe-stats {
@@ -558,8 +658,15 @@ body {
 }
 
 @keyframes modalSlide {
-  from { opacity: 0; transform: translateY(-50px) scale(0.95); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  from {
+    opacity: 0;
+    transform: translateY(-50px) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .modal-content h2 {
@@ -643,8 +750,15 @@ textarea.form-input {
 }
 
 @keyframes toastIn {
-  from { opacity: 0; transform: translateX(100px); }
-  to { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 /* Loading */
@@ -667,21 +781,54 @@ textarea.form-input {
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-  .header h1 { font-size: 2.2em; }
-  .header { padding: 25px 20px; }
-  .cafe-grid { grid-template-columns: 1fr; }
-  .statistics { grid-template-columns: repeat(2, 1fr); }
-  .action-buttons { flex-direction: column; }
-  .action-buttons .btn { width: 100%; justify-content: center; }
-  .nav-bar { flex-direction: column; gap: 15px; }
+  .header h1 {
+    font-size: 2.2em;
+  }
+
+  .header {
+    padding: 25px 20px;
+  }
+
+  .cafe-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .statistics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .action-buttons .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .nav-bar {
+    flex-direction: column;
+    gap: 15px;
+  }
 }
 
 /* Scrollbar */
-::-webkit-scrollbar { width: 10px; }
-::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); }
-::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 5px; }
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 5px;
+}
