@@ -3,9 +3,8 @@ import { NextResponse } from 'next/server'
 
 const allCafes = [
     {
-        id: 1,
         name: 'Kavárna U Stříbrného groše',
-        address: 'Malá náměstí 12, Hradec Králové',
+        address: 'Malé náměstí 12, Hradec Králové',
         description: 'Tradiční kavárna s historií sahající až do 19. století.',
         latitude: 50.2092,
         longitude: 15.8328,
@@ -14,19 +13,9 @@ const allCafes = [
         good_for_study: true,
         has_food: true,
         is_specialty: false,
-        is_historic: true,
-        opening_hours: {
-            mon: { open: '08:00', close: '20:00' },
-            tue: { open: '08:00', close: '20:00' },
-            wed: { open: '08:00', close: '20:00' },
-            thu: { open: '08:00', close: '20:00' },
-            fri: { open: '08:00', close: '22:00' },
-            sat: { open: '09:00', close: '22:00' },
-            sun: { open: '10:00', close: '18:00' }
-        }
+        is_historic: true
     },
     {
-        id: 2,
         name: 'Coffee Time',
         address: 'Gočárova třída 123, Hradec Králové',
         description: 'Moderní prostor pro práci i odpočinek. Výborná výběrová káva.',
@@ -37,19 +26,9 @@ const allCafes = [
         good_for_study: true,
         has_food: false,
         is_specialty: true,
-        is_historic: false,
-        opening_hours: {
-            mon: { open: '07:00', close: '18:00' },
-            tue: { open: '07:00', close: '18:00' },
-            wed: { open: '07:00', close: '18:00' },
-            thu: { open: '07:00', close: '18:00' },
-            fri: { open: '07:00', close: '19:00' },
-            sat: { open: '08:00', close: '17:00' },
-            sun: { open: 'closed', close: 'closed' }
-        }
+        is_historic: false
     },
     {
-        id: 3,
         name: 'Café Adria',
         address: 'Pospíšilova 345, Hradec Králové',
         description: 'Útulná kavárna s velkým výběrem zákusků.',
@@ -60,19 +39,9 @@ const allCafes = [
         good_for_study: false,
         has_food: true,
         is_specialty: false,
-        is_historic: false,
-        opening_hours: {
-            mon: { open: '09:00', close: '21:00' },
-            tue: { open: '09:00', close: '21:00' },
-            wed: { open: '09:00', close: '21:00' },
-            thu: { open: '09:00', close: '21:00' },
-            fri: { open: '09:00', close: '22:00' },
-            sat: { open: '10:00', close: '22:00' },
-            sun: { open: '10:00', close: '20:00' }
-        }
+        is_historic: false
     },
     {
-        id: 4,
         name: 'Black Coffee',
         address: 'Okružní 789, Hradec Králové',
         description: 'Minimalistický design a maximální chuť.',
@@ -83,19 +52,9 @@ const allCafes = [
         good_for_study: true,
         has_food: false,
         is_specialty: true,
-        is_historic: false,
-        opening_hours: {
-            mon: { open: '08:00', close: '18:00' },
-            tue: { open: '08:00', close: '18:00' },
-            wed: { open: '08:00', close: '18:00' },
-            thu: { open: '08:00', close: '18:00' },
-            fri: { open: '08:00', close: '18:00' },
-            sat: { open: '09:00', close: '16:00' },
-            sun: { open: 'closed', close: 'closed' }
-        }
+        is_historic: false
     },
     {
-        id: 5,
         name: 'Čokoládovna',
         address: 'Eliščino nábřeží 12, Hradec Králové',
         description: 'Ráj pro milovníky čokolády v srdci HK.',
@@ -106,60 +65,33 @@ const allCafes = [
         good_for_study: false,
         has_food: true,
         is_specialty: false,
-        is_historic: false,
-        opening_hours: {
-            mon: { open: '10:00', close: '19:00' },
-            tue: { open: '10:00', close: '19:00' },
-            wed: { open: '10:00', close: '19:00' },
-            thu: { open: '10:00', close: '19:00' },
-            fri: { open: '10:00', close: '20:00' },
-            sat: { open: '10:00', close: '20:00' },
-            sun: { open: '13:00', close: '18:00' }
-        }
+        is_historic: false
     },
     {
         name: 'Kavárna U Kocoura',
         address: 'Velké náměstí 123, Hradec Králové',
         description: 'Historická kavárna s útulnou atmosférou. Oblíbené místo místních umělců.',
-        latitude: 50.2092,
-        longitude: 15.8328,
+        latitude: 50.2095,
+        longitude: 15.8335,
         has_wifi: true,
         noise_level: 'tiché',
         has_food: true,
         good_for_study: true,
         is_specialty: false,
-        is_historic: true,
-        opening_hours: {
-            mon: { open: '08:00', close: '20:00' },
-            tue: { open: '08:00', close: '20:00' },
-            wed: { open: '08:00', close: '20:00' },
-            thu: { open: '08:00', close: '20:00' },
-            fri: { open: '08:00', close: '22:00' },
-            sat: { open: '09:00', close: '22:00' },
-            sun: { open: '10:00', close: '18:00' }
-        }
+        is_historic: true
     },
     {
         name: 'Espresso Bar HK',
         address: 'Gočárova třída 501, Hradec Králové',
         description: 'Moderní specialty kavárna s vlastní pražírnou.',
         latitude: 50.2105,
-        longitude: 15.8256,
+        longitude: 15.8260,
         has_wifi: true,
         noise_level: 'střední',
         has_food: false,
         good_for_study: false,
         is_specialty: true,
-        is_historic: false,
-        opening_hours: {
-            mon: { open: '07:00', close: '18:00' },
-            tue: { open: '07:00', close: '18:00' },
-            wed: { open: '07:00', close: '18:00' },
-            thu: { open: '07:00', close: '18:00' },
-            fri: { open: '07:00', close: '19:00' },
-            sat: { open: '08:00', close: '17:00' },
-            sun: { open: 'closed', close: 'closed' }
-        }
+        is_historic: false
     },
     {
         name: 'Café Mozart',
@@ -172,16 +104,7 @@ const allCafes = [
         has_food: true,
         good_for_study: true,
         is_specialty: false,
-        is_historic: false,
-        opening_hours: {
-            mon: { open: '09:00', close: '21:00' },
-            tue: { open: '09:00', close: '21:00' },
-            wed: { open: '09:00', close: '21:00' },
-            thu: { open: '09:00', close: '21:00' },
-            fri: { open: '09:00', close: '22:00' },
-            sat: { open: '10:00', close: '22:00' },
-            sun: { open: '10:00', close: '20:00' }
-        }
+        is_historic: false
     },
     {
         name: 'Studentská kavárna',
@@ -194,16 +117,7 @@ const allCafes = [
         has_food: true,
         good_for_study: true,
         is_specialty: false,
-        is_historic: false,
-        opening_hours: {
-            mon: { open: '07:30', close: '22:00' },
-            tue: { open: '07:30', close: '22:00' },
-            wed: { open: '07:30', close: '22:00' },
-            thu: { open: '07:30', close: '22:00' },
-            fri: { open: '07:30', close: '23:00' },
-            sat: { open: '10:00', close: '23:00' },
-            sun: { open: '12:00', close: '20:00' }
-        }
+        is_historic: false
     },
     {
         name: 'Bio Caffé',
@@ -216,16 +130,7 @@ const allCafes = [
         has_food: true,
         good_for_study: true,
         is_specialty: true,
-        is_historic: false,
-        opening_hours: {
-            mon: { open: '08:00', close: '19:00' },
-            tue: { open: '08:00', close: '19:00' },
-            wed: { open: '08:00', close: '19:00' },
-            thu: { open: '08:00', close: '19:00' },
-            fri: { open: '08:00', close: '20:00' },
-            sat: { open: '09:00', close: '18:00' },
-            sun: { open: '10:00', close: '17:00' }
-        }
+        is_historic: false
     }
 ]
 
@@ -234,19 +139,43 @@ export async function POST() {
 
     const results = []
     for (const cafe of allCafes) {
-        // Zkusíme upsert (pokud má ID, updatuje, jinak vloží)
-        const { data, error } = await supabase
+        // Nejprve zkontrolujeme, jestli kavárna existuje
+        const { data: existing } = await supabase
             .from('cafes')
-            .upsert(cafe, { onConflict: 'name' }) // Použijeme jméno jako konflikt, nebo ID pokud existuje
-            .select()
+            .select('id')
+            .eq('name', cafe.name)
             .single()
 
-        if (error) {
-            results.push({ name: cafe.name, error: error.message })
+        if (existing) {
+            // Aktualizujeme existující
+            const { data, error } = await supabase
+                .from('cafes')
+                .update(cafe)
+                .eq('id', existing.id)
+                .select()
+                .single()
+
+            if (error) {
+                results.push({ name: cafe.name, action: 'update', error: error.message })
+            } else {
+                results.push({ name: cafe.name, action: 'updated', success: true, id: data.id })
+            }
         } else {
-            results.push({ name: cafe.name, success: true, id: data.id })
+            // Vložíme novou
+            const { data, error } = await supabase
+                .from('cafes')
+                .insert(cafe)
+                .select()
+                .single()
+
+            if (error) {
+                results.push({ name: cafe.name, action: 'insert', error: error.message })
+            } else {
+                results.push({ name: cafe.name, action: 'inserted', success: true, id: data.id })
+            }
         }
     }
 
     return NextResponse.json({ results })
 }
+
