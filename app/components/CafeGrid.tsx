@@ -32,7 +32,7 @@ interface CafeGridProps {
 export default function CafeGrid({ cafes, isAdmin }: CafeGridProps) {
     const router = useRouter()
     const supabase = createClient()
-    const { calculateDistance, loading: locLoading } = useUserLocation()
+    const { calculateDistance, loading: locLoading, error: locError } = useUserLocation()
     const [sortBy, setSortBy] = useState<'rating' | 'distance'>('rating')
 
     const sortedCafes = useMemo(() => {
@@ -81,6 +81,13 @@ export default function CafeGrid({ cafes, isAdmin }: CafeGridProps) {
 
     return (
         <div style={{ marginTop: '30px' }}>
+            {/* Location Status / Feedback */}
+            {locError && (
+                <div style={{ background: 'rgba(255, 87, 87, 0.1)', border: '1px solid #ff5757', color: '#ff5757', padding: '10px', borderRadius: '10px', marginBottom: '20px', fontSize: '0.9em' }}>
+                    ⚠️ <strong>Vzdálenost není dostupná:</strong> {locError === 'User denied Geolocation' ? 'Povolte prosím přístup k poloze v prohlížeči.' : locError}
+                </div>
+            )}
+
             {/* Sorting Controls */}
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginBottom: '20px' }}>
                 <span style={{ color: 'var(--text-muted)', fontSize: '0.9em' }}>Seřadit podle:</span>

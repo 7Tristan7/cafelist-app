@@ -40,20 +40,27 @@ export default function ReviewForm({ cafeId, userId, existingReview }: ReviewFor
 
         if (existingReview) {
             // Update existing review
-            await supabase
-                .from('reviews')
-                .update({ rating, text })
+            const { error: updateError } = await supabase
+                .from('ratings')
+                .update({
+                    stars: rating,
+                    comment: text
+                })
                 .eq('id', existingReview.id)
+
+            if (updateError) throw updateError
         } else {
             // Create new review
-            await supabase
-                .from('reviews')
+            const { error: insertError } = await supabase
+                .from('ratings')
                 .insert({
                     user_id: userId,
                     cafe_id: cafeId,
-                    rating,
-                    text
+                    stars: rating,
+                    comment: text
                 })
+
+            if (insertError) throw insertError
         }
 
         setLoading(false)
