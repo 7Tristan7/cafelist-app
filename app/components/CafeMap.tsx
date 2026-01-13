@@ -24,6 +24,10 @@ const CircleMarker = dynamic(
     () => import('react-leaflet').then((mod) => mod.CircleMarker),
     { ssr: false }
 )
+const Circle = dynamic(
+    () => import('react-leaflet').then((mod) => mod.Circle),
+    { ssr: false }
+)
 
 interface Cafe {
     id: number
@@ -42,6 +46,7 @@ interface CafeMapProps {
 interface UserLocation {
     latitude: number
     longitude: number
+    accuracy: number // přesnost v metrech
 }
 
 export default function CafeMap({ cafes }: CafeMapProps) {
@@ -55,20 +60,31 @@ export default function CafeMap({ cafes }: CafeMapProps) {
     useEffect(() => {
         setIsMounted(true)
 
-        // Získání polohy uživatele
+        // Získání polohy uživatele s průběžným sledováním
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
+            // Použijeme watchPosition pro průběžné aktualizace
+            const watchId = navigator.geolocation.watchPosition(
                 (position) => {
                     setUserLocation({
                         latitude: position.coords.latitude,
-                        longitude: position.coords.longitude
+                        longitude: position.coords.longitude,
+                        accuracy: position.coords.accuracy
                     })
                 },
                 (error) => {
                     setLocationError(error.message)
                 },
-                { enableHighAccuracy: true }
+                {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 0 // vždy čerstvá data
+                }
             )
+
+            // Cleanup při unmount
+            return () => {
+                navigator.geolocation.clearWatch(watchId)
+            }
         }
     }, [])
 
@@ -111,21 +127,22 @@ export default function CafeMap({ cafes }: CafeMapProps) {
                     {/* Marker uživatelovy polohy */}
                     {userLocation && (
                         <>
-                            {/* Vnější pulsující kruh */}
-                            <CircleMarker
+                            {/* Kruh zobrazující reálnou přesnost v metrech */}
+                            <Circle
                                 center={[userLocation.latitude, userLocation.longitude]}
-                                radius={25}
+                                radius={userLocation.accuracy}
                                 pathOptions={{
                                     color: '#3b82f6',
                                     fillColor: '#3b82f6',
-                                    fillOpacity: 0.15,
-                                    weight: 2
+                                    fillOpacity: 0.1,
+                                    weight: 1,
+                                    dashArray: '5, 5'
                                 }}
                             />
-                            {/* Vnitřní plný bod */}
+                            {/* Vnitřní plný bod - vaše poloha */}
                             <CircleMarker
                                 center={[userLocation.latitude, userLocation.longitude]}
-                                radius={8}
+                                radius={10}
                                 pathOptions={{
                                     color: '#ffffff',
                                     fillColor: '#3b82f6',
@@ -138,7 +155,11 @@ export default function CafeMap({ cafes }: CafeMapProps) {
                                         <strong style={{ fontSize: '1.1em' }}>📍 Vaše poloha</strong>
                                         <br />
                                         <span style={{ color: '#666', fontSize: '0.85em' }}>
-                                            {userLocation.latitude.toFixed(4)}, {userLocation.longitude.toFixed(4)}
+                                            Přesnost: ±{Math.round(userLocation.accuracy)} m
+                                        </span>
+                                        <br />
+                                        <span style={{ color: '#999', fontSize: '0.75em' }}>
+                                            {userLocation.latitude.toFixed(5)}, {userLocation.longitude.toFixed(5)}
                                         </span>
                                     </div>
                                 </Popup>
@@ -197,7 +218,7 @@ export default function CafeMap({ cafes }: CafeMapProps) {
                 </p>
                 {userLocation && (
                     <p style={{ color: '#3b82f6', fontSize: '0.9em', margin: 0 }}>
-                        🔵 Vaše poloha zobrazena na mapě
+                        🔵 Vaše poloha (přesnost: ±{Math.round(userLocation.accuracy)} m)
                     </p>
                 )}
                 {locationError && (
