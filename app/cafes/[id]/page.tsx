@@ -2,6 +2,10 @@ import { createClient } from '@/utils/supabase/server'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import StarRating from '../../components/StarRating'
+import OpeningHours from '../../components/OpeningHours'
+import FavoriteButton from '../../components/FavoriteButton'
+import PhotoGallery from '../../components/PhotoGallery'
+import ReviewForm from '../../components/ReviewForm'
 
 interface PageProps {
     params: Promise<{ id: string }>
@@ -96,13 +100,16 @@ export default async function CafeDetailPage({ params }: PageProps) {
                             </h1>
                             <p style={{ color: 'var(--text-muted)' }}>📍 {cafe.address}</p>
                         </div>
-                        <StarRating
-                            cafeId={cafe.id}
-                            avgRating={avgRating}
-                            ratingCount={ratings?.length || 0}
-                            readOnly={true}
-                            size="large"
-                        />
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                            <FavoriteButton cafeId={cafe.id} userId={user?.id} />
+                            <StarRating
+                                cafeId={cafe.id}
+                                avgRating={avgRating}
+                                ratingCount={ratings?.length || 0}
+                                readOnly={true}
+                                size="large"
+                            />
+                        </div>
                     </div>
 
                     {/* Description */}
@@ -146,32 +153,21 @@ export default async function CafeDetailPage({ params }: PageProps) {
                     )}
                 </div>
 
+                {/* Opening Hours & Gallery Row */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px' }}>
+                    <OpeningHours hours={cafe.opening_hours} />
+                    <PhotoGallery cafeId={cafe.id} photos={cafe.photos || []} isAdmin={isAdmin} />
+                </div>
+
                 {/* Rating Section */}
+                <ReviewForm
+                    cafeId={cafe.id}
+                    userId={user?.id}
+                    existingReview={userRating ? { id: ratings?.find(r => r.user_id === user?.id)?.id, rating: userRating, text: ratings?.find(r => r.user_id === user?.id)?.comment || '' } : undefined}
+                />
+
                 <div className="glass-card" style={{ padding: '30px', marginTop: '25px' }}>
-                    <h2 style={{ color: 'var(--text)', marginBottom: '20px' }}>⭐ Ohodnoťte tuto kavárnu</h2>
-
-                    {user ? (
-                        <div style={{ marginBottom: '25px' }}>
-                            <p style={{ color: 'var(--text-muted)', marginBottom: '10px' }}>
-                                {userRating ? 'Vaše hodnocení (můžete změnit):' : 'Klikněte na hvězdičky:'}
-                            </p>
-                            <StarRating
-                                cafeId={cafe.id}
-                                userId={user.id}
-                                initialRating={userRating || 0}
-                                size="large"
-                            />
-                        </div>
-                    ) : (
-                        <p style={{ color: 'var(--text-muted)', marginBottom: '20px' }}>
-                            <Link href="/login" style={{ color: 'var(--primary)' }}>Přihlaste se</Link> pro hodnocení této kavárny.
-                        </p>
-                    )}
-
-                    {/* Reviews List */}
-                    <h3 style={{ color: 'var(--text)', marginBottom: '15px', marginTop: '30px' }}>
-                        💬 Hodnocení ({ratings?.length || 0})
-                    </h3>
+                    <h2 style={{ color: 'var(--text)', marginBottom: '20px' }}>💬 Komentáře ({ratings?.length || 0})</h2>
 
                     {ratings && ratings.length > 0 ? (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
