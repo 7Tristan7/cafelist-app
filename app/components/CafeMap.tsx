@@ -127,10 +127,10 @@ export default function CafeMap({ cafes }: CafeMapProps) {
                     {/* Marker uživatelovy polohy */}
                     {userLocation && (
                         <>
-                            {/* Kruh zobrazující reálnou přesnost v metrech */}
+                            {/* Kruh zobrazující přibližnou polohu (třetina přesnosti) */}
                             <Circle
                                 center={[userLocation.latitude, userLocation.longitude]}
-                                radius={userLocation.accuracy}
+                                radius={userLocation.accuracy / 6}
                                 pathOptions={{
                                     color: '#3b82f6',
                                     fillColor: '#3b82f6',
