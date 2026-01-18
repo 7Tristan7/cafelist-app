@@ -140,6 +140,13 @@ export default function CafeGrid({ cafes, isAdmin }: CafeGridProps) {
                                         src={cafe.image_url}
                                         alt={cafe.name}
                                         style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                        onError={(e) => {
+                                            // Fallback when image fails to load
+                                            const target = e.target as HTMLImageElement;
+                                            target.style.display = 'none';
+                                            target.parentElement!.innerHTML = '☕';
+                                        }}
+                                        loading="lazy"
                                     />
                                 ) : (
                                     '☕'
