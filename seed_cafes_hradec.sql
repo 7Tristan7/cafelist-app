@@ -17,112 +17,112 @@ VALUES
 -- 1. Simple Café - Specialty kavárna
 ('Simple Café', 'Švehlova 463/4, Hradec Králové', 
 'Stylová specialty kavárna s profesionálními baristy. Nabízí espresso, cappuccino a filtrovanou kávu z Etiopie, Keni nebo Kostariky. Moderní minimalistický design, ideální pro práci na notebooku.',
-50.2290, 15.6872, true, 'tiché', true, true, true, false, NULL),
+50.2107556, 15.8267375, true, 'tiché', true, true, true, false, NULL),
 
 -- 2. Café Na kole - Oblíbená kavárna v centru
 ('Café Na kole', 'Velké náměstí 130/24, Hradec Králové',
 'Oblíbená kavárna přímo na Velkém náměstí. Výběrová káva z předních českých i zahraničních pražíren. Nabízí sendviče, saláty a domácí dezerty. Zahrádka s kočkami!',
-50.2097, 15.8327, true, 'střední', true, true, true, false, NULL),
+50.2104, 15.8327, true, 'střední', true, true, true, false, NULL),
 
 -- 3. CHROAST Espresso Bar "Námko"
 ('CHROAST Espresso Bar', 'Malé náměstí 8/24, Hradec Králové',
 'Vlastní pražírna kávy s espresso barem. Vyhlášená pro velejemnou chuť kávy. Malý útulný prostor, zaměřený čistě na kvalitní kávu. Ideální pro rychlou zastávku.',
-50.2085, 15.8340, false, 'tiché', false, false, true, false, NULL),
+50.2101409, 15.8364720, false, 'tiché', false, false, true, false, NULL),
 
 -- 4. Pepe Coffee - Pražírna
 ('Pepe Coffee', 'Švehlova 307, Hradec Králové',
 'Pražírna kávy fungující od roku 2014. Zaměřuje se na výběrovou kávu z Nikaragui a Brazílie. Vynikající zákusky a makronky. Možnost nakoupit kávu domů.',
-50.2285, 15.6880, true, 'střední', true, true, true, false, NULL),
+50.2106744, 15.8263115, true, 'střední', true, true, true, false, NULL),
 
 -- 5. Petrof Café - Hudební kavárna
 ('Petrof Café', 'Kuklenská 1074, Hradec Králové',
 'Unikátní hudební kavárna v komplexu PETROF. Káva pražená přímo v hradecké pražírně. Atmosféru dotváří vystavené obrazy a samohrající klavír Petrof. Luxusní prostředí.',
-50.2150, 15.8520, true, 'tiché', true, true, true, true, NULL),
+50.1922528, 15.8519164, true, 'tiché', true, true, true, true, NULL),
 
 -- 6. Cona Coffee
 ('Cona Coffee', 'Gočárova třída 1135, Hradec Králové',
 'Moderní kavárna kousek od hlavního nádraží. Široká nabídka kávy včetně alternativních příprav (V60, Aeropress). Báječné dorty a dezerty.',
-50.2110, 15.8200, true, 'střední', true, true, true, false, NULL),
+50.2138, 15.8144, true, 'střední', true, true, true, false, NULL),
 
 -- 7. Kavárna Vozáb
 ('Kavárna Vozáb', 'Velké náměstí 143, Hradec Králové',
 'Tradičnější kavárna s příjemnou nabídkou. Klidné prostředí vhodné pro posezení s rodinou nebo přáteli. Klasická střední cesta mezi tradicí a modernou.',
-50.2095, 15.8330, true, 'střední', false, true, false, true, NULL),
+50.2098, 15.8335, true, 'střední', false, true, false, true, NULL),
 
 -- 8. Café & Bistro V Pekárně
 ('Café V Pekárně', 'Gočárova třída 868, Hradec Králové',
 'Příjemné prostředí s milou obsluhou. Kvalitní jídlo a snídaně. Rozmanitá nabídka, vyšší cenová kategorie ale odpovídá kvalitě.',
-50.2105, 15.8180, true, 'střední', false, true, false, false, NULL),
+50.2112, 15.8175, true, 'střední', false, true, false, false, NULL),
 
 -- 9. Galerie Café
 ('Galerie Café', 'Velké náměstí 32, Hradec Králové',
 'Útulná stylová kavárna s galerií. Poctivý šálek kávy s možností zakousnout zákusek nebo dortík. Umělecká atmosféra.',
-50.2092, 15.8325, true, 'tiché', true, false, false, true, NULL),
+50.2095, 15.8322, true, 'tiché', true, false, false, true, NULL),
 
 -- 10. Salieri Café
 ('Salieri Café', 'Gočárova třída 506, Hradec Králové',
 'Oblíbená kavárna existující už 15 let. Pestrá paleta kávových nápojů včetně příchutí, limonády, koktejly. Snídaňové menu.',
-50.2115, 15.8165, true, 'hlučné', false, true, false, false, NULL),
+50.2108, 15.8215, true, 'hlučné', false, true, false, false, NULL),
 
 -- 11. Diverse Café
 ('Diverse Café', 'Gočárova třída 1520, Hradec Králové',
 'Novější podnik otevřený v roce 2016. Moderní design, příjemná atmosféra. Dobrá káva a lehké občerstvení.',
-50.2125, 15.8140, true, 'střední', true, true, false, false, NULL),
+50.2130, 15.8130, true, 'střední', true, true, false, false, NULL),
 
 -- 12. Kafe Stánek
 ('Kafe Stánek', 'Hlavní nádraží, Hradec Králové',
 'Luxusní káva přímo na hlavním nádraží. Rychlá obsluha, milý personál. Ideální pro cestující.',
-50.2120, 15.8195, false, 'hlučné', false, false, true, false, NULL),
+50.2122, 15.8188, false, 'hlučné', false, false, true, false, NULL),
 
 -- 13. Bio Central
 ('Bio Central', 'Kavčí plácek 121, Hradec Králové',
 'Bio kavárna s důrazem na kvalitu a udržitelnost. Specialty káva, organické suroviny. Vegan-friendly.',
-50.2088, 15.8350, true, 'tiché', true, true, true, false, NULL),
+50.2090, 15.8355, true, 'tiché', true, true, true, false, NULL),
 
 -- 14. kafe je láska
 ('kafe je láska', 'Pospíšilova 365, Hradec Králové',
 'Jedna z nejlepších specialty kaváren podle European Coffee Trip. Kavárna s vášní pro skvělou kávu. Přátelská atmosféra.',
-50.2070, 15.8290, true, 'tiché', true, true, true, false, NULL),
+50.1907628, 15.8402344, true, 'tiché', true, true, true, false, NULL),
 
 -- 15. To je Bistro
 ('To je Bistro', 'Chelčického 380, Hradec Králové',
 'Kombinace bistra a kavárny. Skvělá káva i jídlo. Oblíbené místo na pracovní obědy i odpolední kafe.',
-50.2060, 15.8270, true, 'střední', true, true, true, false, NULL),
+50.2075, 15.8295, true, 'střední', true, true, true, false, NULL),
 
 -- 16. MOKKA ODA
 ('MOKKA ODA', 'Třída Karla IV. 502, Hradec Králové',
 'Specialty kavárna s orientálním nádechem. Výběrová káva, originální recepty. Klidné prostředí.',
-50.2055, 15.8310, true, 'tiché', true, true, true, true, NULL),
+50.2102, 15.8145, true, 'tiché', true, true, true, true, NULL),
 
 -- 17. CrossCafe Knihovna
 ('CrossCafe Knihovna', 'Hradební 656, Hradec Králové',
 'Síťová kavárna přímo v budově knihovny. Ideální pro studenty. WiFi, zásuvky, klidné prostředí.',
-50.2080, 15.8380, true, 'tiché', true, true, false, false, NULL),
+50.2065, 15.8370, true, 'tiché', true, true, false, false, NULL),
 
 -- 18. La Café
 ('La Café', 'Velké náměstí 16, Hradec Králové',
 'Elegantní kavárna přímo na náměstí. Vynikající dezerty a dorty. Příjemné posezení v historickém centru.',
-50.2098, 15.8320, true, 'střední', false, true, false, true, NULL),
+50.2093, 15.8330, true, 'střední', false, true, false, true, NULL),
 
 -- 19. Café Montaña
 ('Café Montaná', 'Pražská 392, Hradec Králové',
 'Pražírna kávy se zaměřením na prvotřídní kvalitu. Nabízí i kurzy pro baristy. Profesionální přístup.',
-50.2045, 15.8250, true, 'středí', true, false, true, false, NULL),
+50.2055, 15.8240, true, 'středí', true, false, true, false, NULL),
 
 -- 20. Kavárna Artičok
 ('Kavárna Artičok', 'Dukelská 1713, Hradec Králové',
 'Útulná kavárna s domáckou atmosférou. Domácí zákusky a koláče. Vhodné pro rodiny s dětmi.',
-50.2130, 15.8100, true, 'střední', false, true, false, false, NULL),
+50.2115, 15.8105, true, 'střední', false, true, false, false, NULL),
 
 -- 21. Café Dragon
 ('Café Dragon', 'Gočárova třída 800, Hradec Králové',
 'Asijsky laděná kavárna. Nabízí i bubble tea a asijské dezerty. Mladistvá atmosféra.',
-50.2108, 15.8175, true, 'hlučné', false, true, false, false, NULL),
+50.2110, 15.8185, true, 'hlučné', false, true, false, false, NULL),
 
 -- 22. Kavárna U Elišky
 ('Kavárna U Elišky', 'Eliščino nábřeží 456, Hradec Králové',
 'Klidná kavárna s výhledem na řeku. Tradiční české zákusky. Historická budova.',
-50.2065, 15.8295, true, 'tiché', true, true, false, true, NULL)
+50.2108, 15.8280, true, 'tiché', true, true, false, true, NULL)
 
 ON CONFLICT DO NOTHING;
 
