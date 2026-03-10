@@ -1,7 +1,30 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import dynamic from 'next/dynamic'
+import L from 'leaflet'
+
+// =====================================================
+// FIX: Leaflet default marker icons v Next.js
+// Webpack/Turbopack rozbije cesty k ikonám markers
+// Řešení: nastavit ikony ručně přes CDN URL
+// =====================================================
+delete (L.Icon.Default.prototype as any)._getIconUrl
+L.Icon.Default.mergeOptions({
+    iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+    iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+    shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+})
+
+// Vlastní ikona pro kavárny (oranžový pin)
+const cafeIcon = new L.Icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png',
+    shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+})
 
 // Dynamický import pro Leaflet (SSR problém)
 const MapContainer = dynamic(
@@ -172,6 +195,7 @@ export default function CafeMap({ cafes }: CafeMapProps) {
                         <Marker
                             key={cafe.id}
                             position={[cafe.latitude!, cafe.longitude!]}
+                            icon={cafeIcon}
                         >
                             <Popup>
                                 <div style={{ minWidth: '150px' }}>
